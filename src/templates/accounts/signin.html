@@ -1,25 +1,38 @@
 {% extends 'base.html'%}
+{%block title%} | Sign in{%endblock%}
 {% block content%}
 
 
 
     <div class="my-form container p-5 my-5 rounded border border-warning">
-        <form>
-            <h2 class="text-center">Sign In</h2>
+        <h2 class="text-center">Sign In</h2>
             <hr>
+        {% if request.user.is_authenticated%}
+            <h4 class="alert alert-warning">
+                Welcome,{{request.user.username}},you are now logged in
+                <a class="text-dark" href="{%url 'logout'%} ">Logout</a>
+            </h4>
+
+{%else%}
+         <form method="POST">
+             {% csrf_token %}
+
+
+            {% include 'partials/_alerts.html'%}
+
 
             <div class="form-group">
                 <label for="inputUsername">Username</label>
-                <input type="text" class="form-control" id="inputUsername" placeholder="" required>
+                <input type="text" name="username" class="form-control" id="inputUsername" placeholder="" required>
             </div>
             <div class="form-group">
                 <label for="inputPassword">Password</label>
-                <input type="password" class="form-control" id="inputPassword" required>
+                <input type="password" name="password" class="form-control" id="inputPassword" required>
             </div>
 
             <div class="form-group">
                 <div class="pretty p-svg p-curve p-jelly">
-                    <input type="checkbox" id="inputTerms" />
+                    <input type="checkbox" checked name="rememberme" id="inputTerms" />
                     <div class="state p-warning">
                         <!-- svg path -->
                         <svg class="svg svg-icon" viewBox="0 0 20 20">
@@ -29,9 +42,11 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-warning">Login</button>
+            <button type="submit" name="btnsignin" class="btn btn-warning">Login</button>
         </form>
 
+
+{% endif %}
     </div>
 
 
